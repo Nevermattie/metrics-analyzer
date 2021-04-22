@@ -8,7 +8,7 @@ import datetime
 # Запрос статистики за конкретный период
 headers = {"Content-Type": "application/json", "X-Auth-Token": "4CE7B412-49B7-3DCF-B56D-3441B6A3698A"}
 url = 'http://localhost:8080/execmodel'
-dates = {'start': '01.01.2018', 'finish': '01.06.2018'}
+dates = {'start': '01.01.2018', 'finish': '01.06.2019'}
 urlData = requests.post(url, json=dates, headers=headers)
 testData = io.StringIO(urlData.json())
 testParse = re.findall(r'\w+', testData.readline().replace('\n', ''))
@@ -35,8 +35,8 @@ dictInns = dict(dictInns)
 dictDates = dict(dictDates)
 
 # На выходе получим словарь dictDates формата:
-# { ключ-datetime:[inn, действие],
-#   ключ-datetime:[inn, действие], ...}
+# { datetime:[inn, действие],
+#   datetime:[inn, действие], ...}
 
 # И ещё один словарь dictInns формата:
 # { inn:[datetime, действие, datetime2, действие2],
@@ -54,4 +54,3 @@ for key in dict(dictInns):
 
 indexPrecision = indexTP / (indexTP + indexFP)  # Расчёт индекса Precision
 print(indexPrecision)
-
