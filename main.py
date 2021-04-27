@@ -41,16 +41,23 @@ dictDates = dict(dictDates)
 # И ещё один словарь dictInns формата:
 # { inn:[datetime, действие, datetime2, действие2],
 #   inn:[datetime, действие], ...}
+# pprint(dictDates)
+# pprint(dictInns)
 
 indexTP = 0     # Учёт выборки True Positive
 indexFP = 0     # Учёт выборки False Positive
+conversionAlternate = 0
 
 for key in dict(dictInns):
     if 'PURCHASE' in dictInns[key]:
         indexTP += 1
     if 'CLOSE' in dictInns[key]:
         indexFP += 1
+    if 'CONVERSION' in dictInns[key] and 'PURCHASE' not in dictInns[key]:
+        indexFP += 1
+    if (len(dictInns[key]) == 2) and (dictInns[key][1] == 'RECOMENDATION'):
+        indexFP += 1
     key += 1
 
 indexPrecision = indexTP / (indexTP + indexFP)  # Расчёт индекса Precision
-print(indexPrecision)
+print("\n", "TP: ", indexTP, "\n", "FP: ", indexFP, "\n", "Precision: ", indexPrecision)
