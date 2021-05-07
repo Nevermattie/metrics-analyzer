@@ -42,22 +42,39 @@ dictDates = dict(dictDates)
 # { inn:[datetime, действие, datetime2, действие2],
 #   inn:[datetime, действие], ...}
 # pprint(dictDates)
-# pprint(dictInns)
+pprint(dictInns)
 
 indexTP = 0     # Учёт выборки True Positive
 indexFP = 0     # Учёт выборки False Positive
+indexFN = 0
 conversionAlternate = 0
 
 for key in dict(dictInns):
-    if 'PURCHASE' in dictInns[key]:
+    if 'PURCHASE' in dictInns[key] and 'CONVERSION' in dictInns[key]:
         indexTP += 1
+    if 'PURCHASE' in dictInns[key] and 'CONVERSION' not in dictInns[key]:
+        indexFN += 1
     if 'CLOSE' in dictInns[key]:
         indexFP += 1
     if 'CONVERSION' in dictInns[key] and 'PURCHASE' not in dictInns[key]:
-        indexFP += 1
+        conversionAlternate += 1
     if (len(dictInns[key]) == 2) and (dictInns[key][1] == 'RECOMENDATION'):
         indexFP += 1
     key += 1
 
-indexPrecision = indexTP / (indexTP + indexFP)  # Расчёт индекса Precision
-print("\n", "TP: ", indexTP, "\n", "FP: ", indexFP, "\n", "Precision: ", indexPrecision)
+beta = int(input("Укажите значение Бета для F-меры. Для установки важности точности над полнотой используйте значение "
+                 "0, для непараметрической F-меры укажите 1, для важности полноты - любое значение > 1: "))
+Precision = (indexTP + conversionAlternate) / (indexTP + conversionAlternate + indexFP)  # Precision
+PrecisionAlt = indexTP / (indexTP + indexFP + conversionAlternate)
+Recall = indexTP / (indexTP + indexFN)
+RecallAlt = (indexTP + conversionAlternate) / (indexTP + indexFN + conversionAlternate)
+BetaFMeasure = (1 + beta*beta) * Precision * Recall / ((beta*beta*Precision) + Recall)
+
+print("\n", "TP: ", indexTP,
+      "\n", "FP: ", indexFP,
+      "\n", "FN: ", indexFN,
+      "\n", "Precision (Точность): ", Precision,
+      "\n", "Precision alternative:", PrecisionAlt,
+      "\n", "Recall (Полнота): ", Recall,
+      "\n", "Recall alternative: ", RecallAlt,
+      "\n", "F-мера: ", BetaFMeasure)
