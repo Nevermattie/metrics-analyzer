@@ -4,6 +4,8 @@ import io
 from collections import defaultdict
 from pprint import pprint
 import datetime
+import mysql.connector
+from mysql.connector import Error
 
 # Запрос статистики за конкретный период
 headers = {"Content-Type": "application/json", "X-Auth-Token": "4CE7B412-49B7-3DCF-B56D-3441B6A3698A"}
