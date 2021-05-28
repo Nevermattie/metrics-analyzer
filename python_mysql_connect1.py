@@ -1,47 +1,59 @@
 import mysql.connector
 from mysql.connector import Error
 from mysql.connector import MySQLConnection, Error
+from python_mysql_dbconfig import *
 
 
 def connect():
     """ Connect to MySQL database """
     try:
-        conn = mysql.connector.connect(host='localhost',
-                                       database='python_mysql',
-                                       user='root',
-                                       password='password')
-        if conn.is_connected():
-            print('Connected to MySQL database')
-
+        # conn = mysql.connector.connect(host='{}'.format(input("host: ")), database='{}'.format(input("database:")),
+        #                                user='{}'.format(input("user: ")), password='{}'.format(input("password: ")))
+        mydb = mysql.connector.connect(host='{}'.format("localhost"), database='{}'.format("db_metrics"),
+                                       user='{}'.format("root"), password='{}'.format("password"))
+        if mydb.is_connected():
+            print('Connected to database db_metrics')
     except Error as e:
         print(e)
 
 
-def insert_books(books):
-    query = "INSERT INTO test_db_2(inn, datetime, action)"
-            "VALUES(%s,%s,%s)"
-
-
-    conn_insert = connect()
+def insert_raw_data(query):
     try:
-        cursor = conn_insert.cursor()
-        cursor.executemany(query, books)
+        db_config = read_db_config()
+        mydb = MySQLConnection(**db_config)
 
-        conn_insert.commit()
-    except Error as e:
-        print('Error:', e)
+        cursor = mydb.cursor()
+        cursor.execute(query)
+
+        if cursor.lastrowid:
+            print('last insert id', cursor.lastrowid)
+        else:
+            print('last insert id not found')
+
+        mydb.commit()
+    except Error as error:
+        print(error)
 
     finally:
         cursor.close()
-        conn_insert.close()
+        mydb.close()
 
-def main():
-    connect()
-    books = [('Harry Potter And The Order Of The Phoenix', '9780439358071'),
-             ('Gone with the Wind', '9780446675536'),
-             ('Pride and Prejudice (Modern Library Classics)', '9780679783268')]
-    insert_books(books)
 
-if __name__ == '__main__':
-    main()
+def query_with_fetchall():
+    try:
+        dbconfig = read_db_config()
+        mydb = MySQLConnection(**dbconfig)
+        cursor = mydb.cursor()
+        cursor.execute("SELECT * FROM books")
+        rows = cursor.fetchall()
 
+        print('Total Row(s):', cursor.rowcount)
+        for row in rows:
+            print(row)
+
+    except Error as e:
+        print(e)
+
+    finally:
+        cursor.close()
+        mydb.close()

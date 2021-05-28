@@ -6,6 +6,7 @@ from pprint import pprint
 import datetime
 import mysql.connector
 from mysql.connector import Error
+from python_mysql_connect1 import *
 
 # Запрос статистики за конкретный период
 headers = {"Content-Type": "application/json", "X-Auth-Token": "4CE7B412-49B7-3DCF-B56D-3441B6A3698A"}
@@ -18,13 +19,17 @@ testParse = re.findall(r'\w+', testData.readline().replace('\n', ''))
 dictDates = defaultdict(list)  # Пустой словарь с ключами из datetime
 dictInns = defaultdict(list)   # Пустой словарь с ключами из INN
 
+
+connect()
+
+
 i = 1
 while i <= len(testParse):
     # Проверяет наличие ключа datetime в dictDates с элементом-списком и добавляет в список inn
     dictDates.setdefault(int(int(testParse[i])/1000), []).append(int(int(testParse[i + 2])))
 
     # Проверяет наличие ключа datetime в dictDates с элементом-списком и добавляет в список действие
-    dictDates.setdefault(int(int(testParse[i])/1000), []).append(testParse[i + 4])\
+    dictDates.setdefault(int(int(testParse[i])/1000), []).append(testParse[i + 4])
 
     # Проверяет наличие ключа-inn в dictInns с элементом-списком и добавляет в список datetime
     dictInns.setdefault(int(int(testParse[i + 2])), []).append(int(int(testParse[i])/1000))
@@ -32,6 +37,7 @@ while i <= len(testParse):
     # Проверяет наличие ключа-inn в dictInns с элементом-списком и добавляет в список действие
     dictInns.setdefault(int(testParse[i + 2]), []).append(testParse[i + 4])
     i += 6
+
 
 dictInns = dict(dictInns)
 dictDates = dict(dictDates)
@@ -44,7 +50,7 @@ dictDates = dict(dictDates)
 # { inn:[datetime, действие, datetime2, действие2],
 #   inn:[datetime, действие], ...}
 # pprint(dictDates)
-pprint(dictInns)
+# pprint(dictInns)
 
 indexTP = 0     # Учёт выборки True Positive
 indexFP = 0     # Учёт выборки False Positive
@@ -64,8 +70,7 @@ for key in dict(dictInns):
         indexFP += 1
     key += 1
 
-beta = int(input("Укажите значение Бета для F-меры. Для установки важности точности над полнотой используйте значение "
-                 "0, для непараметрической F-меры укажите 1, для важности полноты - любое значение > 1: "))
+beta = 1
 Precision = (indexTP + conversionAlternate) / (indexTP + conversionAlternate + indexFP)  # Precision
 PrecisionAlt = indexTP / (indexTP + indexFP + conversionAlternate)
 Recall = indexTP / (indexTP + indexFN)
@@ -80,3 +85,5 @@ print("\n", "TP: ", indexTP,
       "\n", "Recall (Полнота): ", Recall,
       "\n", "Recall alternative: ", RecallAlt,
       "\n", "F-мера: ", BetaFMeasure)
+
+
