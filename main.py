@@ -3,10 +3,11 @@ import re
 import io
 from collections import defaultdict
 from pprint import pprint
-import datetime
+from datetime import datetime
 import mysql.connector
 from mysql.connector import Error
 from python_mysql_connect1 import *
+from telegram_notify import send_notification
 
 # Запрос статистики за конкретный период
 headers = {"Content-Type": "application/json", "X-Auth-Token": "4CE7B412-49B7-3DCF-B56D-3441B6A3698A"}
@@ -77,13 +78,17 @@ Recall = indexTP / (indexTP + indexFN)
 RecallAlt = (indexTP + conversionAlternate) / (indexTP + indexFN + conversionAlternate)
 BetaFMeasure = (1 + beta*beta) * Precision * Recall / ((beta*beta*Precision) + Recall)
 
-print("\n", "TP: ", indexTP,
-      "\n", "FP: ", indexFP,
-      "\n", "FN: ", indexFN,
+summary = """"\n", "TP: ", indexTP,
+      " | ", "FP: ", indexFP,
+      " | ", "FN: ", indexFN,
       "\n", "Precision (Точность): ", Precision,
       "\n", "Precision alternative:", PrecisionAlt,
       "\n", "Recall (Полнота): ", Recall,
       "\n", "Recall alternative: ", RecallAlt,
-      "\n", "F-мера: ", BetaFMeasure)
+      "\n", "F-мера: ", BetaFMeasure"""
+print(summary)
+current_datetime = datetime.now()
+
+send_notification(summary, current_datetime)
 
 

@@ -44,7 +44,7 @@ def query_with_fetchall():
         dbconfig = read_db_config()
         mydb = MySQLConnection(**dbconfig)
         cursor = mydb.cursor()
-        cursor.execute("SELECT * FROM books")
+        cursor.execute("SELECT * FROM raw_data")
         rows = cursor.fetchall()
 
         print('Total Row(s):', cursor.rowcount)
