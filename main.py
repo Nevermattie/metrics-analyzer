@@ -2,7 +2,6 @@ import requests
 import re
 import io
 from collections import defaultdict
-from pprint import pprint
 from datetime import datetime
 import mysql.connector
 from mysql.connector import Error
@@ -26,22 +25,17 @@ connect()
 
 i = 1
 while i <= len(testParse):
-    # Проверяет наличие ключа datetime в dictDates с элементом-списком и добавляет в список inn
-    dictDates.setdefault(int(int(testParse[i])/1000), []).append(int(int(testParse[i + 2])))
-
-    # Проверяет наличие ключа datetime в dictDates с элементом-списком и добавляет в список действие
-    dictDates.setdefault(int(int(testParse[i])/1000), []).append(testParse[i + 4])
-
     # Проверяет наличие ключа-inn в dictInns с элементом-списком и добавляет в список datetime
     dictInns.setdefault(int(int(testParse[i + 2])), []).append(int(int(testParse[i])/1000))
 
     # Проверяет наличие ключа-inn в dictInns с элементом-списком и добавляет в список действие
     dictInns.setdefault(int(testParse[i + 2]), []).append(testParse[i + 4])
+    print(i, " ", len(testParse))
     i += 6
 
 
 dictInns = dict(dictInns)
-dictDates = dict(dictDates)
+
 
 # На выходе получим словарь dictDates формата:
 # { datetime:[inn, действие],
@@ -53,42 +47,41 @@ dictDates = dict(dictDates)
 # pprint(dictDates)
 # pprint(dictInns)
 
-indexTP = 0     # Учёт выборки True Positive
-indexFP = 0     # Учёт выборки False Positive
-indexFN = 0
-conversionAlternate = 0
+TP = 0     # Учёт выборки True Positive
+FP = 0     # Учёт выборки False Positive
+FN = 0
+ConversionAlt = 0
 
 for key in dict(dictInns):
     if 'PURCHASE' in dictInns[key] and 'CONVERSION' in dictInns[key]:
-        indexTP += 1
+        TP += 1
     if 'PURCHASE' in dictInns[key] and 'CONVERSION' not in dictInns[key]:
-        indexFN += 1
+        FN += 1
     if 'CLOSE' in dictInns[key]:
-        indexFP += 1
+        FP += 1
     if 'CONVERSION' in dictInns[key] and 'PURCHASE' not in dictInns[key]:
-        conversionAlternate += 1
+        ConversionAlt += 1
     if (len(dictInns[key]) == 2) and (dictInns[key][1] == 'RECOMENDATION'):
-        indexFP += 1
+        FP += 1
     key += 1
 
 beta = 1
-Precision = (indexTP + conversionAlternate) / (indexTP + conversionAlternate + indexFP)  # Precision
-PrecisionAlt = indexTP / (indexTP + indexFP + conversionAlternate)
-Recall = indexTP / (indexTP + indexFN)
-RecallAlt = (indexTP + conversionAlternate) / (indexTP + indexFN + conversionAlternate)
+Precision = (TP + ConversionAlt) / (TP + ConversionAlt + FP)  # Precision
+PrecisionAlt = TP / (TP + FP + ConversionAlt)
+Recall = TP / (TP + FN)
+RecallAlt = (TP + ConversionAlt) / (TP + FN + ConversionAlt)
 BetaFMeasure = (1 + beta*beta) * Precision * Recall / ((beta*beta*Precision) + Recall)
 
-summary = """"\n", "TP: ", indexTP,
-      " | ", "FP: ", indexFP,
-      " | ", "FN: ", indexFN,
-      "\n", "Precision (Точность): ", Precision,
-      "\n", "Precision alternative:", PrecisionAlt,
-      "\n", "Recall (Полнота): ", Recall,
-      "\n", "Recall alternative: ", RecallAlt,
-      "\n", "F-мера: ", BetaFMeasure"""
-print(summary)
-current_datetime = datetime.now()
+arguments = [TP, FP, Precision, PrecisionAlt, Recall, RecallAlt, BetaFMeasure]
 
-send_notification(summary, current_datetime)
+summary = ("\nTP: {}\n"
+           "FP: {}\n"
+           "Precision (Точность): {}\n"
+           "Precision alternative: {}\n"
+           "Recall (Полнота): {}\n"
+           "Recall alternative: {}\n"
+           "F-Мера: {}").format(*arguments)
+
+
 
 
