@@ -1,24 +1,7 @@
-import requests
-import re
-import io
 from collections import defaultdict
 from datetime import datetime, date, time
 from python_mysql_connect1 import *
-from telegram_notify import send_notification
-from pprint import pprint
-import timeit
-
-
-def import_data():  # Запрос статистики за конкретный период
-    headers = {"Content-Type": "application/json", "X-Auth-Token": "4CE7B412-49B7-3DCF-B56D-3441B6A3698A"}
-    url = 'http://localhost:8080/execmodel'
-    dates = {'start': '01.01.2010', 'finish': '31.12.2021'}
-    urlData = requests.post(url, json=dates, headers=headers)
-    testData = io.StringIO(urlData.json())
-    parsed_data = re.findall(r'\w+', testData.readline().replace('\n', ''))
-    testData.close()
-    urlData.close()
-    return parsed_data
+from web import send_notification, import_data
 
 
 def raw_dictionary(raw_data):  # Подготовка данных
@@ -122,7 +105,7 @@ def main():
     indexes = confusion_matrix(raw_dictionary(import_data()))
     metrics = get_metrics(indexes[0], indexes[1], indexes[2], indexes[3], indexes[4], 1)
     summary = get_summary(indexes, metrics)
-    send_notification(summary, timestamp)
+    print(type(metrics))
 
 
 if __name__ == '__main__':
