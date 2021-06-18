@@ -16,7 +16,7 @@ def connect():
         print(e)
 
 
-def insert_metrics(indexes, metrics, timestamp):
+def send_metrics_to_db(indexes, metrics, timestamp):
     query = """INSERT INTO table_metrics(TP,TP_alternative,FP,FP_alternative,FN,Prec,Precision_alternative,Recall,Recall_alternative,F1score,F1score_alternative,Updated) 
             VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
     args = (indexes[0], indexes[1], indexes[2], indexes[3], indexes[4], metrics[0], metrics[1], metrics[2], metrics[3], metrics[4], metrics[5], timestamp)

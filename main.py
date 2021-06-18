@@ -2,9 +2,10 @@ from collections import defaultdict
 from datetime import datetime, date, time
 from db_communication import connect
 from web import send_notification, import_data
-from db_communication import insert_metrics
+from db_communication import send_metrics_to_db
 import numpy as np
 from pprint import pprint
+import time
 
 
 def raw_dictionary(raw_data):  # Подготовка данных
@@ -43,48 +44,69 @@ def get_indexes(actions_dictionary):  # Получение индексов не
 
 
 def get_precision(indexes):  # Подсчёт точности
-    precision = indexes[0] / (indexes[0] + indexes[3])
+    try:
+        precision = indexes[0] / (indexes[0] + indexes[3])
+    except ZeroDivisionError:
+        return 0
     return precision
 
 
 def get_precision_alt(indexes):  # Альтернативный подсчёт точности
-    precision_alt = indexes[1] / (indexes[1] + indexes[2])
+    try:
+        precision_alt = indexes[1] / (indexes[1] + indexes[2])
+    except ZeroDivisionError:
+        return 0
     return precision_alt
 
 
 def get_recall(indexes):  # Подсчёт полноты
-    recall = indexes[0] / (indexes[0] + indexes[4])
-    return recall
+    try:
+        recall = indexes[0] / (indexes[0] + indexes[4])
+    except ZeroDivisionError:
+        return 0
+    return recall if (indexes[0] + indexes[4]) else 0
 
 
 def get_recall_alt(indexes):  # Альтернавтивный подсчёт полноты
-    recall_alt = indexes[1] / (indexes[1] + indexes[4])
-    return recall_alt
+    try:
+        recall_alt = indexes[1] / (indexes[1] + indexes[4])
+    except ZeroDivisionError:
+        return 0
+    return recall_alt if (indexes[1] + indexes[4]) else 0
 
 
 def get_beta_f_measure(indexes, beta):  # Подсчёт F-меры
-    beta_f_measure = (1 + beta * beta) * (indexes[0] / (indexes[0] + indexes[3])) * (indexes[0] /
-                                                                                     (indexes[0] + indexes[4])) / \
-                     ((beta * beta * (indexes[0] / (indexes[0] + indexes[3]))) + (indexes[0] / (indexes[0] +
-                                                                                                indexes[4])))
+    try:
+        beta_f_measure = (1 + beta * beta) * (indexes[0] / (indexes[0] + indexes[3])) * (indexes[0] /
+                                                                                         (indexes[0] + indexes[4])) / \
+                         ((beta * beta * (indexes[0] / (indexes[0] + indexes[3]))) + (indexes[0] / (indexes[0] +
+                                                                                                    indexes[4])))
+    except ZeroDivisionError:
+        return 0
     return beta_f_measure
 
 
 def get_beta_f_measure_alt(indexes, beta):  # Альтернативный подсчёт F-меры
-    beta_f_measure_alt = (1 + beta * beta) * (indexes[1] / (indexes[1] + indexes[2])) * (indexes[1] /
-                                                                                         (indexes[1] + indexes[4])) / \
-                         ((beta * beta * (indexes[1] / (indexes[1] + indexes[2]))) + (indexes[1] / (indexes[1] +
-                                                                                                    indexes[4])))
+    try:
+        beta_f_measure_alt = (1 + beta * beta) * (indexes[1] / (indexes[1] + indexes[2])) * (indexes[1] /
+                                                                                             (indexes[1] + indexes[4])) / \
+                             ((beta * beta * (indexes[1] / (indexes[1] + indexes[2]))) + (indexes[1] / (indexes[1] +
+                                                                                                        indexes[4])))
+    except ZeroDivisionError:
+        return 0
     return beta_f_measure_alt
 
 
 def get_all_metrics(indexes, beta):  # Подсчёт всех метрик разом
-    precision = indexes[0] / (indexes[0] + indexes[3])
-    precision_alt = indexes[1] / (indexes[1] + indexes[2])
-    recall = indexes[0] / (indexes[0] + indexes[4])
-    recall_alt = indexes[1] / (indexes[1] + indexes[4])
-    beta_f_measure = (1 + beta * beta) * precision * recall / ((beta * beta * precision) + recall)
-    beta_f_measure_alt = (1 + beta * beta) * precision_alt * recall_alt / ((beta * beta * precision_alt) + recall_alt)
+    try:
+        precision = indexes[0] / (indexes[0] + indexes[3])
+        precision_alt = indexes[1] / (indexes[1] + indexes[2])
+        recall = indexes[0] / (indexes[0] + indexes[4])
+        recall_alt = indexes[1] / (indexes[1] + indexes[4])
+        beta_f_measure = (1 + beta * beta) * precision * recall / ((beta * beta * precision) + recall)
+        beta_f_measure_alt = (1 + beta * beta) * precision_alt * recall_alt / ((beta * beta * precision_alt) + recall_alt)
+    except ZeroDivisionError:
+        print("Denominator must not be 0")
     return precision, precision_alt, recall, recall_alt, beta_f_measure, beta_f_measure_alt
 
 
@@ -113,14 +135,21 @@ def get_beta_f_measure_dependency(indexes):  # Возвращает зависи
 
 
 def main():
-    indexes = list(get_indexes(raw_dictionary(import_data())))
-    metrics = list(get_all_metrics(indexes, 1))
-    pprint(get_beta_f_measure_dependency(indexes))
-    # print(type(metrics))
-    # print(type(indexes))
-    # for i in range(0, 50, 1):
-    #     timestamp = datetime.now()
-    #     insert_metrics(indexes, metrics, timestamp)
+    metrics = [0, 0, 0, 0, 0, 0]
+    timestamp = 1514764800
+    rows = 0
+    for i in range(1514764800, 1577836800, 86400):
+        indexes = get_indexes(raw_dictionary(import_data(timestamp)))
+        metrics[0] = get_precision(indexes)
+        metrics[1] = get_precision_alt(indexes)
+        metrics[2] = get_recall(indexes)
+        metrics[3] = get_recall_alt(indexes)
+        metrics[4] = get_beta_f_measure(indexes, 1)
+        metrics[5] = get_beta_f_measure_alt(indexes, 1)
+        send_metrics_to_db(indexes, metrics, datetime.fromtimestamp(timestamp))
+        rows += 1
+        print("{} rows has been sent".format(rows))
+        timestamp += 86400
 
 
 if __name__ == '__main__':

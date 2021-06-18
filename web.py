@@ -1,6 +1,7 @@
 import requests
 import re
 import io
+from datetime import datetime, date, time
 
 
 def send_notification(self):
@@ -10,10 +11,10 @@ def send_notification(self):
     requests.get(API_link + f"/sendMessage?chat_id={chat_id}&text={text}")
 
 
-def import_data():  # Запрос статистики за конкретный период
+def import_data(timestamp):  # Запрос статистики за конкретный период
     headers = {"Content-Type": "application/json", "X-Auth-Token": "4CE7B412-49B7-3DCF-B56D-3441B6A3698A"}
     url = 'http://localhost:8080/execmodel'
-    dates = {'start': '01.01.2010', 'finish': '01.05.2018'}
+    dates = {'start': '01.01.2010', 'finish': '{}'.format(datetime.fromtimestamp(timestamp).strftime("%d.%m.%Y"))}
     urlData = requests.post(url, json=dates, headers=headers)
     testData = io.StringIO(urlData.json())
     parsed_data = re.findall(r'\w+', testData.readline().replace('\n', ''))
