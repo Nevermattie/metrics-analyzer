@@ -1,7 +1,10 @@
 from collections import defaultdict
 from datetime import datetime, date, time
-from python_mysql_connect1 import *
+from db_communication import connect
 from web import send_notification, import_data
+from db_communication import insert_metrics
+import numpy as np
+from pprint import pprint
 
 
 def raw_dictionary(raw_data):  # Подготовка данных
@@ -17,26 +20,26 @@ def raw_dictionary(raw_data):  # Подготовка данных
     return dictionary
 
 
-def confusion_matrix(dictionary):   # Получение индексов неполной матрицы истинности
-    tp = 0
-    fp = 0
-    fn = 0
+def get_indexes(actions_dictionary):  # Получение индексов неполной матрицы истинности
+    TP = 0
+    FP = 0
+    FN = 0
     conversion_incomplete = 0
-    for key in dict(dictionary):
-        if 'PURCHASE' in dictionary[key] and 'CONVERSION' in dictionary[key]:
-            tp += 1
-        if 'PURCHASE' in dictionary[key] and 'CONVERSION' not in dictionary[key]:
-            fn += 1
-        if 'CLOSE' in dictionary[key]:
-            fp += 1
-        if 'CONVERSION' in dictionary[key] and 'PURCHASE' not in dictionary[key]:
+    for key in dict(actions_dictionary):
+        if 'PURCHASE' in actions_dictionary[key] and 'CONVERSION' in actions_dictionary[key]:
+            TP += 1
+        if 'PURCHASE' in actions_dictionary[key] and 'CONVERSION' not in actions_dictionary[key]:
+            FN += 1
+        if 'CLOSE' in actions_dictionary[key]:
+            FP += 1
+        if 'CONVERSION' in actions_dictionary[key] and 'PURCHASE' not in actions_dictionary[key]:
             conversion_incomplete += 1
-        if (len(dictionary[key]) == 2) and (dictionary[key][1] == 'RECOMENDATION'):
-            fp += 1
+        if (len(actions_dictionary[key]) == 2) and (actions_dictionary[key][1] == 'RECOMENDATION'):
+            FP += 1
         key += 1
-    tp_alt = tp + conversion_incomplete
-    fp_alt = fp + conversion_incomplete
-    return tp, tp_alt, fp, fp_alt, fn
+    TP_Conv = TP + conversion_incomplete
+    FP_Conv = FP + conversion_incomplete
+    return TP, TP_Conv, FP, FP_Conv, FN
 
 
 def get_precision(indexes):  # Подсчёт точности
@@ -45,45 +48,44 @@ def get_precision(indexes):  # Подсчёт точности
 
 
 def get_precision_alt(indexes):  # Альтернативный подсчёт точности
-    precision = indexes[1] / (indexes[1] + indexes[2])
-    return precision
+    precision_alt = indexes[1] / (indexes[1] + indexes[2])
+    return precision_alt
 
 
-def get_recall(indexes):    # Подсчёт полноты
+def get_recall(indexes):  # Подсчёт полноты
     recall = indexes[0] / (indexes[0] + indexes[4])
     return recall
 
 
-def get_recall_alt(indexes):    # Альтернавтивный подсчёт полноты
+def get_recall_alt(indexes):  # Альтернавтивный подсчёт полноты
     recall_alt = indexes[1] / (indexes[1] + indexes[4])
     return recall_alt
 
 
 def get_beta_f_measure(indexes, beta):  # Подсчёт F-меры
-    BetaFMeasure = (1 + beta * beta) * \
-                   (indexes[0] / (indexes[0] + indexes[3])) * \
-                   (indexes[0] / (indexes[0] + indexes[4])) / \
-                   ((beta * beta * (indexes[0] / (indexes[0] + indexes[3]))) +
-                    (indexes[0] / (indexes[0] + indexes[4])))
-    return BetaFMeasure
+    beta_f_measure = (1 + beta * beta) * (indexes[0] / (indexes[0] + indexes[3])) * (indexes[0] /
+                                                                                     (indexes[0] + indexes[4])) / \
+                     ((beta * beta * (indexes[0] / (indexes[0] + indexes[3]))) + (indexes[0] / (indexes[0] +
+                                                                                                indexes[4])))
+    return beta_f_measure
 
 
 def get_beta_f_measure_alt(indexes, beta):  # Альтернативный подсчёт F-меры
-    BetaFMeasureAlt = (1 + beta * beta) * \
-                      (indexes[1] / (indexes[1] + indexes[2])) * (indexes[1] / (indexes[1] + indexes[4])) \
-                      / ((beta * beta * (indexes[1] / (indexes[1] + indexes[2]))) +
-                         (indexes[1] / (indexes[1] + indexes[4])))
-    return BetaFMeasureAlt
+    beta_f_measure_alt = (1 + beta * beta) * (indexes[1] / (indexes[1] + indexes[2])) * (indexes[1] /
+                                                                                         (indexes[1] + indexes[4])) / \
+                         ((beta * beta * (indexes[1] / (indexes[1] + indexes[2]))) + (indexes[1] / (indexes[1] +
+                                                                                                    indexes[4])))
+    return beta_f_measure_alt
 
 
-def get_metrics(tp, tp_alt, fp, fp_alt, fn, beta):  # Подсчёт всех метрик разом
-    Precision = tp / (tp + fp_alt)
-    PrecisionAlt = tp_alt / (tp_alt + fp)
-    Recall = tp / (tp + fn)
-    RecallAlt = tp_alt / (tp_alt + fn)
-    BetaFMeasure = (1 + beta*beta) * Precision * Recall / ((beta*beta*Precision) + Recall)
-    BetaFMeasureAlt = (1 + beta*beta) * PrecisionAlt * RecallAlt / ((beta*beta*PrecisionAlt) + RecallAlt)
-    return Precision, PrecisionAlt, Recall, RecallAlt, BetaFMeasure, BetaFMeasureAlt
+def get_all_metrics(indexes, beta):  # Подсчёт всех метрик разом
+    precision = indexes[0] / (indexes[0] + indexes[3])
+    precision_alt = indexes[1] / (indexes[1] + indexes[2])
+    recall = indexes[0] / (indexes[0] + indexes[4])
+    recall_alt = indexes[1] / (indexes[1] + indexes[4])
+    beta_f_measure = (1 + beta * beta) * precision * recall / ((beta * beta * precision) + recall)
+    beta_f_measure_alt = (1 + beta * beta) * precision_alt * recall_alt / ((beta * beta * precision_alt) + recall_alt)
+    return precision, precision_alt, recall, recall_alt, beta_f_measure, beta_f_measure_alt
 
 
 def get_summary(indexes, metrics):  # Сводка по всем данным
@@ -95,19 +97,31 @@ def get_summary(indexes, metrics):  # Сводка по всем данным
                "Recall: {}\n"
                "Recall alternative: {}\n"
                "F-Мера: {}\n"
-               "F-Мера alternative: {}\n").format(indexes[0], indexes[2], (indexes[1]-indexes[0]),
-                                                  *metrics)
+               "F-Мера alternative: {}\n").format(indexes[0], indexes[2], (indexes[1] - indexes[0]), *metrics)
     return summary
 
 
+def get_beta_f_measure_dependency(indexes):  # Возвращает зависимость F-меры от beta
+    dependency_graph = []
+    for beta in np.arange(0.00, 5.00, 0.01):
+        beta_f_measure = (1 + beta * beta) * (indexes[0] / (indexes[0] + indexes[3])) * (indexes[0] /
+                                                                                         (indexes[0] + indexes[4])) / \
+                         ((beta * beta * (indexes[0] / (indexes[0] + indexes[3]))) + (indexes[0] / (indexes[0] +
+                                                                                                    indexes[4])))
+        dependency_graph.append((format(round(beta, 2), '.2f'), beta_f_measure))
+    return dependency_graph
+
+
 def main():
-    timestamp = datetime.now()
-    indexes = confusion_matrix(raw_dictionary(import_data()))
-    metrics = get_metrics(indexes[0], indexes[1], indexes[2], indexes[3], indexes[4], 1)
-    summary = get_summary(indexes, metrics)
-    print(type(metrics))
+    indexes = list(get_indexes(raw_dictionary(import_data())))
+    metrics = list(get_all_metrics(indexes, 1))
+    pprint(get_beta_f_measure_dependency(indexes))
+    # print(type(metrics))
+    # print(type(indexes))
+    # for i in range(0, 50, 1):
+    #     timestamp = datetime.now()
+    #     insert_metrics(indexes, metrics, timestamp)
 
 
 if __name__ == '__main__':
     main()
-

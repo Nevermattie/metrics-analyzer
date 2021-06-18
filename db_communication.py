@@ -1,7 +1,6 @@
 import mysql.connector
-from mysql.connector import Error
 from mysql.connector import MySQLConnection, Error
-from python_mysql_dbconfig import *
+from db_config import read_db_config
 
 
 def connect():
@@ -17,26 +16,25 @@ def connect():
         print(e)
 
 
-def insert_raw_data(query):
+def insert_metrics(indexes, metrics, timestamp):
+    query = """INSERT INTO table_metrics(TP,TP_alternative,FP,FP_alternative,FN,Prec,Precision_alternative,Recall,Recall_alternative,F1score,F1score_alternative,Updated) 
+            VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
+    args = (indexes[0], indexes[1], indexes[2], indexes[3], indexes[4], metrics[0], metrics[1], metrics[2], metrics[3], metrics[4], metrics[5], timestamp)
     try:
         db_config = read_db_config()
-        mydb = MySQLConnection(**db_config)
-
-        cursor = mydb.cursor()
-        cursor.execute(query)
-
+        conn = MySQLConnection(**db_config)
+        cursor = conn.cursor()
+        cursor.execute(query, args)
         if cursor.lastrowid:
             print('last insert id', cursor.lastrowid)
         else:
             print('last insert id not found')
-
-        mydb.commit()
+        conn.commit()
     except Error as error:
         print(error)
-
     finally:
         cursor.close()
-        mydb.close()
+        conn.close()
 
 
 def query_with_fetchall():
