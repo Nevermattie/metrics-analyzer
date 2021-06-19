@@ -1,15 +1,14 @@
 from collections import defaultdict
-from datetime import datetime, date, time
-from db_communication import connect
+from datetime import datetime, time
 from web import send_notification, import_data
-from db_communication import send_metrics_to_db
+from db_communication import send_metrics_to_db, send_f_measure_dependency
 import numpy as np
-from pprint import pprint
 import time
+import gc
 
 
-def raw_dictionary(raw_data):  # Подготовка данных
-    dictionary = defaultdict(list)  # Пустой словарь с ключами из INN
+def get_raw_dictionary(raw_data):  # Преобразование сырых данных в словарь
+    dictionary = defaultdict(list)
     for i in range(0, len(raw_data), 6):
         if i == len(raw_data):
             break
@@ -21,7 +20,7 @@ def raw_dictionary(raw_data):  # Подготовка данных
     return dictionary
 
 
-def get_indexes(actions_dictionary):  # Получение индексов неполной матрицы истинности
+def get_indexes(actions_dictionary):  # Получение индексов неполной матрицы истинности: TP, FP, их альтернативы и FN
     TP = 0
     FP = 0
     FN = 0
@@ -64,7 +63,7 @@ def get_recall(indexes):  # Подсчёт полноты
         recall = indexes[0] / (indexes[0] + indexes[4])
     except ZeroDivisionError:
         return 0
-    return recall if (indexes[0] + indexes[4]) else 0
+    return recall
 
 
 def get_recall_alt(indexes):  # Альтернавтивный подсчёт полноты
@@ -72,7 +71,7 @@ def get_recall_alt(indexes):  # Альтернавтивный подсчёт п
         recall_alt = indexes[1] / (indexes[1] + indexes[4])
     except ZeroDivisionError:
         return 0
-    return recall_alt if (indexes[1] + indexes[4]) else 0
+    return recall_alt
 
 
 def get_beta_f_measure(indexes, beta):  # Подсчёт F-меры
@@ -89,9 +88,10 @@ def get_beta_f_measure(indexes, beta):  # Подсчёт F-меры
 def get_beta_f_measure_alt(indexes, beta):  # Альтернативный подсчёт F-меры
     try:
         beta_f_measure_alt = (1 + beta * beta) * (indexes[1] / (indexes[1] + indexes[2])) * (indexes[1] /
-                                                                                             (indexes[1] + indexes[4])) / \
-                             ((beta * beta * (indexes[1] / (indexes[1] + indexes[2]))) + (indexes[1] / (indexes[1] +
-                                                                                                        indexes[4])))
+                                                                                             (indexes[1] +
+                                                                                              indexes[4])) \
+                             / ((beta * beta * (indexes[1] / (indexes[1] + indexes[2]))) + (indexes[1] / (indexes[1] +
+                                                                                                          indexes[4])))
     except ZeroDivisionError:
         return 0
     return beta_f_measure_alt
@@ -110,7 +110,7 @@ def get_all_metrics(indexes, beta):  # Подсчёт всех метрик ра
     return precision, precision_alt, recall, recall_alt, beta_f_measure, beta_f_measure_alt
 
 
-def get_summary(indexes, metrics):  # Сводка по всем данным
+def get_summary(indexes, metrics):  # Текстовая сводка по всем данным
     summary = ("\nTP: {}\n"
                "FP: {}\n"
                "Оборванных на Conversion цепочек: {}\n"
@@ -123,33 +123,30 @@ def get_summary(indexes, metrics):  # Сводка по всем данным
     return summary
 
 
-def get_beta_f_measure_dependency(indexes):  # Возвращает зависимость F-меры от beta
+def get_beta_f_measure_dependency(indexes):  # Возвращает лист из кортежей, состоящих из beta и beta_f_measure
     dependency_graph = []
     for beta in np.arange(0.00, 5.00, 0.01):
         beta_f_measure = (1 + beta * beta) * (indexes[0] / (indexes[0] + indexes[3])) * (indexes[0] /
                                                                                          (indexes[0] + indexes[4])) / \
                          ((beta * beta * (indexes[0] / (indexes[0] + indexes[3]))) + (indexes[0] / (indexes[0] +
                                                                                                     indexes[4])))
-        dependency_graph.append((format(round(beta, 2), '.2f'), beta_f_measure))
+        dependency_graph.append((float(format(round(beta, 2), '.2f')), float(beta_f_measure)))
     return dependency_graph
 
 
 def main():
-    metrics = [0, 0, 0, 0, 0, 0]
-    timestamp = 1514764800
-    rows = 0
-    for i in range(1514764800, 1577836800, 86400):
-        indexes = get_indexes(raw_dictionary(import_data(timestamp)))
-        metrics[0] = get_precision(indexes)
-        metrics[1] = get_precision_alt(indexes)
-        metrics[2] = get_recall(indexes)
-        metrics[3] = get_recall_alt(indexes)
-        metrics[4] = get_beta_f_measure(indexes, 1)
-        metrics[5] = get_beta_f_measure_alt(indexes, 1)
-        send_metrics_to_db(indexes, metrics, datetime.fromtimestamp(timestamp))
-        rows += 1
-        print("{} rows has been sent".format(rows))
-        timestamp += 86400
+    timing = time.time()
+    while True:
+        if time.time() - timing > 1800.0:
+
+            timestamp = datetime.now()
+            indexes = get_indexes(get_raw_dictionary(import_data(timestamp)))
+            metrics = get_all_metrics(indexes, 1)
+            send_metrics_to_db(indexes, metrics, timestamp)
+            # send_f_measure_dependency(get_beta_f_measure_dependency(indexes))
+            timing = time.time()
+            del timestamp, indexes, metrics
+            gc.collect()
 
 
 if __name__ == '__main__':

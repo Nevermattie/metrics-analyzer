@@ -1,57 +1,55 @@
-import mysql.connector
 from mysql.connector import MySQLConnection, Error
 from db_config import read_db_config
 
 
-def connect():
-    """ Connect to MySQL database """
-    try:
-        # conn = mysql.connector.connect(host='{}'.format(input("host: ")), database='{}'.format(input("database:")),
-        #                                user='{}'.format(input("user: ")), password='{}'.format(input("password: ")))
-        mydb = mysql.connector.connect(host='{}'.format("localhost"), database='{}'.format("db_metrics"),
-                                       user='{}'.format("root"), password='{}'.format("password"))
-        if mydb.is_connected():
-            print('Connected to database db_metrics')
-    except Error as e:
-        print(e)
-
-
-def send_metrics_to_db(indexes, metrics, timestamp):
+def send_metrics_to_db(indexes, metrics, timestamp):    # Отправляет одну строку со всеми данными в table_metrics
     query = """INSERT INTO table_metrics(TP,TP_alternative,FP,FP_alternative,FN,Prec,Precision_alternative,Recall,Recall_alternative,F1score,F1score_alternative,Updated) 
             VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
-    args = (indexes[0], indexes[1], indexes[2], indexes[3], indexes[4], metrics[0], metrics[1], metrics[2], metrics[3], metrics[4], metrics[5], timestamp)
+    args = (indexes[0], indexes[1], indexes[2], indexes[3], indexes[4], metrics[0],
+            metrics[1], metrics[2], metrics[3], metrics[4], metrics[5], timestamp)
     try:
-        db_config = read_db_config()
-        conn = MySQLConnection(**db_config)
+        conn = MySQLConnection(**read_db_config())
         cursor = conn.cursor()
         cursor.execute(query, args)
-        if cursor.lastrowid:
-            print('last insert id', cursor.lastrowid)
-        else:
-            print('last insert id not found')
         conn.commit()
     except Error as error:
         print(error)
+    finally:
+        print('\033[92m' + '{}  Data has been sent to [db_metrics].[table_metrics] '.format(timestamp))
+        cursor.close()
+        conn.close()
+
+
+def send_f_measure_dependency(dependency_graph):    # Обновляет данные в таблице table_dependency
+    clear = """TRUNCATE TABLE db_metrics.table_dependency;"""
+    query = """INSERT INTO table_dependency(beta,fmeasure)
+            VALUES(%s,%s)"""
+    try:
+        conn = MySQLConnection(**read_db_config())
+        cursor = conn.cursor()
+        cursor.execute(clear)
+        conn.commit()
+        conn.cursor()
+        cursor.executemany(query, dependency_graph)
+        conn.commit()
+        print('\033[92m' + 'Table [db_metrics].[table_dependency] has been updated')
+    except Error as e:
+        print('\033[1;31m' + 'Error: ', e)
     finally:
         cursor.close()
         conn.close()
 
 
-def query_with_fetchall():
+def truncate_table_metrics():   # Очищает таблицу table_metrics с данными
+    query = "TRUNCATE TABLE db_metrics.table_metrics;"
     try:
-        dbconfig = read_db_config()
-        mydb = MySQLConnection(**dbconfig)
-        cursor = mydb.cursor()
-        cursor.execute("SELECT * FROM raw_data")
-        rows = cursor.fetchall()
-
-        print('Total Row(s):', cursor.rowcount)
-        for row in rows:
-            print(row)
-
+        conn = MySQLConnection(**read_db_config())
+        cursor = conn.cursor()
+        cursor.execute(query)
+        conn.commit()
+        print('\033[1;31m' + "Table [table_metrics] has been cleared successfully")
     except Error as e:
-        print(e)
-
+        print('\033[1;31m' + 'Error: ', e)
     finally:
         cursor.close()
-        mydb.close()
+        conn.close()
