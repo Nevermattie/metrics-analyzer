@@ -5,7 +5,7 @@ import io
 
 def send_notification(self):    # Отправляет текстовое уведомление в телеграм-чат через бота
     try:
-        API_link = "    "
+        API_link = "https://api.telegram.org/botXXXXXXXXXX:YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY"
         text = str(self)
         chat_id = -000000000    # Тут указывается id чата
         requests.get(API_link + f"/sendMessage?chat_id={chat_id}&text={text}")
