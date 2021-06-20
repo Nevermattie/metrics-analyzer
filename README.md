@@ -38,3 +38,8 @@ Recall_alternative | flaot
 TP | int
 TP_alternative | int
 Updated | datetime
+
+# Постскриптум
+в `computations.py` и `db_communication.py` есть два неиспользуемых метода: `get_beta_f_measure_dependency()` и `send_f_measure_dependency()`. 
+1. `get_beta_f_measure_dependency()` - формирует зависимость F-меры от beta, где бета принимает значения от 0.00 до 5.00 с шагом в 0.01, и формирует список кортежей, состоящих из beta и посчитанной относительно неё F-меры
+2. `send_f_measure_dependency()` - отправляет список кортежей из предыдущего метода в отдельную таблицу базы данных. У нас не получилось в Grafana создать график зависимости одной величины от другой, без участия времени, но удалять метод тоже жалко, так что пусть будет
