@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="2262422c-45fe-470a-b490-acf288f6a14c" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="JupyterTrust" id="40bb6e27-6abe-498e-a3a9-196297e2bd9f" />
+  <component name="ProjectId" id="1rWDwrcSP1LJl3RsbQZsgrme0S3" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DatabaseDriversLRU" value="mysql" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="PyConsoleOptionsProvider">
+    <option name="myPythonConsoleState">
+      <console-settings>
+        <option name="useSoftWraps" value="true" />
+      </console-settings>
+    </option>
+  </component>
+  <component name="RunManager" selected="Python.main2">
+    <configuration name="computations" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="METRICS-ANALYZER" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\MattieIshida\Desktop\REPO\METRICS-ANALYZER\computations.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="db_communication" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="METRICS-ANALYZER" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\MattieIshida\Desktop\REPO\METRICS-ANALYZER\db_communication.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="main2" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\Users\MattieIshida\Desktop\REPO\METRICS-ANALYZER\venv\Scripts\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main2.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="start" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\Users\MattieIshida\Desktop\REPO\METRICS-ANALYZER\venv\Scripts\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/start.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="web" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="METRICS-ANALYZER" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\MattieIshida\Desktop\REPO\METRICS-ANALYZER\web.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.computations" />
+      <item itemvalue="Python.db_communication" />
+      <item itemvalue="Python.main2" />
+      <item itemvalue="Python.start" />
+      <item itemvalue="Python.web" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.start" />
+        <item itemvalue="Python.computations" />
+        <item itemvalue="Python.web" />
+        <item itemvalue="Python.main2" />
+        <item itemvalue="Python.db_communication" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration">
+    <configuration>C:\Users\MattieIshida\AppData\Roaming\Subversion</configuration>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="2262422c-45fe-470a-b490-acf288f6a14c" name="Default Changelist" comment="" />
+      <created>1619083193927</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1619083193927</updated>
+      <workItem from="1619083216198" duration="1425000" />
+      <workItem from="1619515318174" duration="2150000" />
+      <workItem from="1619538037070" duration="339000" />
+      <workItem from="1619606362164" duration="632000" />
+      <workItem from="1620127411246" duration="1894000" />
+      <workItem from="1620386176536" duration="5325000" />
+      <workItem from="1620475839184" duration="79000" />
+      <workItem from="1620819997246" duration="2641000" />
+      <workItem from="1621254153277" duration="5775000" />
+      <workItem from="1621783457118" duration="1385000" />
+      <workItem from="1621787211112" duration="1508000" />
+      <workItem from="1621861608148" duration="8117000" />
+      <workItem from="1622202183124" duration="423000" />
+      <workItem from="1622203966511" duration="3430000" />
+      <workItem from="1623692806258" duration="716000" />
+      <workItem from="1623927754380" duration="3505000" />
+      <workItem from="1623935108529" duration="10921000" />
+      <workItem from="1623953428143" duration="1098000" />
+      <workItem from="1623961720320" duration="1440000" />
+      <workItem from="1624009787535" duration="1241000" />
+      <workItem from="1624011046064" duration="4413000" />
+      <workItem from="1624020271310" duration="8352000" />
+      <workItem from="1624033065088" duration="3727000" />
+      <workItem from="1624106320446" duration="16489000" />
+      <workItem from="1624176214199" duration="1564000" />
+      <workItem from="1624177797825" duration="92000" />
+    </task>
+    <task id="LOCAL-00001" summary="Nothing interesting">
+      <created>1619085871894</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1619085871894</updated>
+    </task>
+    <task id="LOCAL-00002" summary="учет Conversion">
+      <created>1619518458677</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1619518458677</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Добавлен расчет Recall и F-measure">
+      <created>1620391561128</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1620391561128</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Database connection added">
+      <created>1621261045753</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1621261045753</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Различные изменения">
+      <created>1622202399819</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1622202399819</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Различные изменения 2">
+      <created>1622202544020</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1622202544020</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Добавлены уведомления в Telegram">
+      <created>1622207249926</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1622207249926</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Минорные изменения">
+      <created>1623930352392</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1623930352392</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Импорт и подготовка данных выделены в отдельные методы">
+      <created>1623938279397</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1623938279397</updated>
+    </task>
+    <task id="LOCAL-00010" summary="В отдельные методы выделены: неполная матрица истинности, precision, recall, beta f measure, их альтернативные варианты подсчёта и подсчёт всех метрик скопом">
+      <created>1623946073733</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1623946073733</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Удалены ненужные файлы, сетевые функции выделены в web.py">
+      <created>1623954437382</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1623954437382</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Прикрутили выгрузку метрик в базу данных">
+      <created>1624029778667</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1624029778667</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Прикрутили выгрузку метрик в базу данных">
+      <created>1624029810081</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1624029810081</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Проверена визуализация метрик в grafana">
+      <created>1624037363336</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1624037363337</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Отредактированы все методы, добавлено обновление таблицы заивисмости beta(f-measure), которое не пригодилось, добавлен метод для очистки таблицы с метриками, добавлена автоматическая отправка данных в базу данных.">
+      <created>1624124875433</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1624124875433</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Методы вычисления выделены в отдельный файл. Добавлен start.py, отвечающий за запуск скрипта по обновлению данных.">
+      <created>1624177437879</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1624177437879</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Nothing interesting" />
+    <MESSAGE value="учет Conversion" />
+    <MESSAGE value="Добавлен расчет Recall и F-measure" />
+    <MESSAGE value="Database connection added" />
+    <MESSAGE value="Различные изменения" />
+    <MESSAGE value="Различные изменения 2" />
+    <MESSAGE value="Добавлены уведомления в Telegram" />
+    <MESSAGE value="Минорные изменения" />
+    <MESSAGE value="Импорт и подготовка данных выделены в отдельные методы" />
+    <MESSAGE value="В отдельные методы выделены: неполная матрица истинности, precision, recall, beta f measure, их альтернативные варианты подсчёта и подсчёт всех метрик скопом" />
+    <MESSAGE value="Удалены ненужные файлы, сетевые функции выделены в web.py" />
+    <MESSAGE value="Прикрутили выгрузку метрик в базу данных" />
+    <MESSAGE value="Проверена визуализация метрик в grafana" />
+    <MESSAGE value="Отредактированы все методы, добавлено обновление таблицы заивисмости beta(f-measure), которое не пригодилось, добавлен метод для очистки таблицы с метриками, добавлена автоматическая отправка данных в базу данных." />
+    <MESSAGE value="Методы вычисления выделены в отдельный файл. Добавлен start.py, отвечающий за запуск скрипта по обновлению данных." />
+    <option name="LAST_COMMIT_MESSAGE" value="Методы вычисления выделены в отдельный файл. Добавлен start.py, отвечающий за запуск скрипта по обновлению данных." />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/METRICS_ANALYZER$start.coverage" NAME="start Coverage Results" MODIFIED="1624177714885" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/METRICS_ANALYZER$main2.coverage" NAME="main2 Coverage Results" MODIFIED="1622205161577" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/METRICS_ANALYZER$main.coverage" NAME="main Coverage Results" MODIFIED="1624124566851" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/METRICS_ANALYZER$python_mysql_connect1.coverage" NAME="python_mysql_connect1 Coverage Results" MODIFIED="1621258827294" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/METRICS_ANALYZER$telegram_notify.coverage" NAME="telegram_notify Coverage Results" MODIFIED="1622206270298" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+  </component>
+</project>
