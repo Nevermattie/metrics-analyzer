@@ -1,8 +1,7 @@
 from configparser import ConfigParser
 
 
-# Считывает config.ini для подключение к базе данных
-def read_db_config(filename='config.ini', section='mysql'):
+def read_db_config(filename='config.ini', section='mysql'):  # Считывает config.ini для подключение к базе данных
     parser = ConfigParser()
     parser.read(filename)
     db = {}

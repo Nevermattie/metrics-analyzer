@@ -1,10 +1,5 @@
 from collections import defaultdict
-from datetime import datetime, time
-from web import send_notification, import_data
-from db_communication import send_metrics_to_db, send_f_measure_dependency
 import numpy as np
-import time
-import gc
 
 
 def get_raw_dictionary(raw_data):  # Преобразование сырых данных в словарь
@@ -132,22 +127,3 @@ def get_beta_f_measure_dependency(indexes):  # Возвращает лист и�
                                                                                                     indexes[4])))
         dependency_graph.append((float(format(round(beta, 2), '.2f')), float(beta_f_measure)))
     return dependency_graph
-
-
-def main():
-    timing = time.time()
-    while True:
-        if time.time() - timing > 1800.0:
-
-            timestamp = datetime.now()
-            indexes = get_indexes(get_raw_dictionary(import_data(timestamp)))
-            metrics = get_all_metrics(indexes, 1)
-            send_metrics_to_db(indexes, metrics, timestamp)
-            # send_f_measure_dependency(get_beta_f_measure_dependency(indexes))
-            timing = time.time()
-            del timestamp, indexes, metrics
-            gc.collect()
-
-
-if __name__ == '__main__':
-    main()

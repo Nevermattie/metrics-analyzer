@@ -15,7 +15,7 @@ def send_metrics_to_db(indexes, metrics, timestamp):    # Отправляет �
     except Error as error:
         print(error)
     finally:
-        print('\033[92m' + '{}  Data has been sent to [db_metrics].[table_metrics] '.format(timestamp))
+        print('\033[92m'+'{}  1 row of data has been sent to [db_metrics].[table_metrics] '.format(timestamp)+'\033[0m')
         cursor.close()
         conn.close()
 
@@ -32,9 +32,9 @@ def send_f_measure_dependency(dependency_graph):    # Обновляет дан�
         conn.cursor()
         cursor.executemany(query, dependency_graph)
         conn.commit()
-        print('\033[92m' + 'Table [db_metrics].[table_dependency] has been updated')
+        print('\033[92m' + 'Table [db_metrics].[table_dependency] has been updated' + '\033[0m')
     except Error as e:
-        print('\033[1;31m' + 'Error: ', e)
+        print('\033[1;31m' + 'Error: ', e, '\033[0m')
     finally:
         cursor.close()
         conn.close()
@@ -47,9 +47,9 @@ def truncate_table_metrics():   # Очищает таблицу table_metrics с
         cursor = conn.cursor()
         cursor.execute(query)
         conn.commit()
-        print('\033[1;31m' + "Table [table_metrics] has been cleared successfully")
+        print('\033[1;31m' + "Table [table_metrics] has been cleared successfully" + '\033[0m')
     except Error as e:
-        print('\033[1;31m' + 'Error: ', e)
+        print('\033[1;31m' + 'Error: ', e, '\033[0m')
     finally:
         cursor.close()
         conn.close()
